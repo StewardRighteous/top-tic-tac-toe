@@ -11,11 +11,8 @@ function createGameBoard() {
         diagonalStatus: false,
         winner: "",
     }
-    function addMarkerX(indexValue) {
-        gameBoard.at(indexValue).push("X");
-    }
-    function addMarkerO(indexValue) {
-        gameBoard.at(indexValue).push("O");
+    function addMarkerXO(indexValue, marker) {
+        gameBoard.at(indexValue).push(marker);
     }
     function getWinner() {
         if (gameOver) {
@@ -61,5 +58,23 @@ function createGameBoard() {
         }
     }
 
-    return { addMarkerX, addMarkerO, getWinner, isGameOver }
+    return { addMarkerXO, getWinner, isGameOver };
+}
+
+function createPlayer() {
+    let playerName;
+    let playerMarker;
+    function setPlayerName(name) {
+        playerName = name;
+    }
+    function getPlayerName() {
+        return playerName;
+    }
+    function setPlayerMarker(marker) {
+        playerMarker = playerMarker;
+    }
+    function getPlayerMarker() {
+        return playerMarker;
+    }
+    return { setPlayerMarker, getPlayerMarker, setPlayerName, getPlayerName };
 }
