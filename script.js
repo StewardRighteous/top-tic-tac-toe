@@ -1,5 +1,5 @@
 function createGameBoard() {
-    const gameBoard = [];
+    const gameBoard = new Array(9);
     const rows = [0, 3, 6];
     const columns = [0, 1, 2];
     const diagonal1 = 0;
@@ -9,6 +9,7 @@ function createGameBoard() {
         rowStatus: false,
         columnStatus: false,
         diagonalStatus: false,
+        drawSatus:false,
         winner: "",
     }
     function addMarkerXO(indexValue, marker) {
@@ -24,7 +25,7 @@ function createGameBoard() {
         isRowJoined();
         isColumnJoined();
         isDiagonalJoined();
-        if (isJoined.rowStatus || isJoined.columnStatus || isJoined.diagonalStatus) {
+        if (isJoined.rowStatus || isJoined.columnStatus || isJoined.diagonalStatus || isJoined.drawSatus) {
             gameOver = true;
         }
         return gameOver;
@@ -56,6 +57,14 @@ function createGameBoard() {
         if (gameBoard[diagonal2] == gameBoard[diagonal2 + 2] == gameBoard[diagonal2 + 4]) {
             isJoined.diagonalStatus = true;
             isJoined.winner = gameBoard[diagonal2];
+        }
+    }
+    // Checks for a draw Match
+    function isDraw(){
+        let draw = gameBoard.contains(undefined);
+        if(!draw){
+            isJoined.drawSatus = true;
+            isJoined.winner = "draw";
         }
     }
 
