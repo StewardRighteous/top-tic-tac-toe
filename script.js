@@ -1,5 +1,5 @@
 function createGameBoard() {
-    const gameBoard = new Array(9);
+    const gameBoard = [];
     const rows = [0, 3, 6];
     const columns = [0, 1, 2];
     const diagonal1 = 0;
@@ -13,7 +13,9 @@ function createGameBoard() {
         winner: "",
     }
     function addMarkerXO(indexValue, marker) {
-        gameBoard.at(indexValue).push(marker);
+        if(gameBoard[indexValue] == null || gameBoard[indexValue] == undefined){
+            gameBoard.splice(indexValue, 1 , marker) ;
+        }
     }
     function getWinner() {
         if (gameOver) {
@@ -25,6 +27,7 @@ function createGameBoard() {
         isRowJoined();
         isColumnJoined();
         isDiagonalJoined();
+        isDraw();
         if (isJoined.rowStatus || isJoined.columnStatus || isJoined.diagonalStatus || isJoined.drawSatus) {
             gameOver = true;
         }
@@ -61,7 +64,7 @@ function createGameBoard() {
     }
     // Checks for a draw Match
     function isDraw(){
-        let draw = gameBoard.contains(undefined);
+        let draw = gameBoard.slice(0,9).includes(undefined);
         if(!draw){
             isJoined.drawSatus = true;
             isJoined.winner = "draw";
@@ -71,9 +74,15 @@ function createGameBoard() {
     return { addMarkerXO, getWinner, isGameOver };
 }
 
-function createPlayer(playerName, playerMarker) {
+function createPlayer() {
     let playerName;
     let playerMarker;
+    function setPlayerName(name){
+        playerName = name;
+    }
+    function setPlayerMarker(marker){
+        playerMarker = marker;
+    }
     function getPlayerName() {
         return playerName;
     }
@@ -84,29 +93,13 @@ function createPlayer(playerName, playerMarker) {
         let indexValue = prompt("Enter an Index Value");
         return indexValue;
     }
-    return { getPlayerMarker, getPlayerName, selectIndex };
+    return { getPlayerMarker, getPlayerName, selectIndex, setPlayerName, setPlayerMarker };
 }
 
-function gameController(){
-    const totalRounds = 3;
-    const eachRoundWinner = [];
-    let roundCounter = 0;
-    player1Name = prompt("Player 1 name : ");
-    player2Name = prompt("Player 2  name :");
-    player1 = createPlayer(player1Name, "X");
-    player2 = createPlayer(player2Name , "O");
-    function startGame(){
-        while(roundCounter != totalRounds){
-            gameBoard = createGameBoard();
-            if(!gameBoard.gameOver()){
-                let indexValue = player1.selectIndex();
-                gameBoard.addMarkerXO(indexValue, player1.marker);
-                if(gameBoard.gameOver()){
-                    break;
-                }
-                indexValue =player2.selectIndex();
-                gameBoard.addMarkerXO(indexValue, player2.marker);
-            }
-        }
-    }   
+function newGame(){
+   let gameBoard = createGameBoard();
+   const rounds = 3;
+   let currentRound = 1;
+   const winners = [];
+   le
 }
