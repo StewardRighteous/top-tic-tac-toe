@@ -23,48 +23,73 @@ function createGameBoard() {
         }
     }
     // clears board for New round
-    function clearBoard(){
-        gameBoard = new Array(9);
+    function clearBoard() {
+        gameBoard.fill(undefined);
+        gameOver = false;
     }
     // Checks for winner
     function isGameOver() {
-        isRowJoined();
-        isColumnJoined();
-        isDiagonalJoined();
-        isDraw();
-        if (isJoined.rowStatus || isJoined.columnStatus || isJoined.diagonalStatus || isJoined.drawSatus) {
-            gameOver = true;
+        // we need atleast six markers inorder for the game to get over
+        if (numberOfMarkerInGameBoard() >= 5) {
+            isRowJoined();
+            isColumnJoined();
+            isDiagonalJoined();
+            isDraw();
+            gameOver = (isJoined.rowStatus || isJoined.columnStatus || isJoined.diagonalStatus || isJoined.drawSatus) ? true : false;
+            return gameOver;
         }
         return gameOver;
     }
-    // Checks if one of the rows has same marker 
-    function isRowJoined() {
-        for (let row in rows) {
-            if (gameBoard[row] == gameBoard[row + 1] == gameBoard[row + 2]) {
-                isJoined.rowStatus = true;
-                isJoined.winner = gameBoard[row];
+    // Returns number of markers in the gameBoard
+    function numberOfMarkerInGameBoard() {
+        let count = 0;
+        let noOfUnmarkedValues = 0;
+        let totalLength = gameBoard.length;
+        for (let i = 0; i < totalLength; i++) {
+            if (gameBoard[i] == undefined) {
+                noOfUnmarkedValues++;
             }
         }
+        count = totalLength - noOfUnmarkedValues;
+        return count;
+    }
+    // Checks if one of the rows has same marker 
+    function isRowJoined() {
+        rows.forEach(value => {
+            let rowJoined = (gameBoard[value] != undefined
+                && gameBoard[value] == gameBoard[value + 1]
+                && gameBoard[value] == gameBoard[value + 2]) ? true : false;
+            if (rowJoined) {
+                isJoined.rowStatus = true;
+                isJoined.winner = gameBoard[value];
+            }
+        });
     }
     // Checks if one of the Columns has same marker
     function isColumnJoined() {
-        for (let column in columns) {
-            if (gameBoard[column] == gameBoard[column + 3] == gameBoard[column + 6]) {
+        columns.forEach(value => {
+            let columnJoined = (gameBoard[value] != undefined
+                && gameBoard[value] == gameBoard[value + 3]
+                && gameBoard[value] == gameBoard[value + 6]) ? true : false;
+            if (columnJoined) {
                 isJoined.columnStatus = true;
-                isJoined.winner = gameBoard[column];
+                isJoined.winner = gameBoard[value];
             }
-        }
+        });
     }
     // Checks if one of the diagonal has same marker
     function isDiagonalJoined() {
-        let diagonalValue1 = gameBoard[diagonal1];
-        let diagonalValue2 = gameBoard[diagonal1 + 4];
-        let diagonalValue3 = gameBoard[diagonal1 + 8];
-        if (diagonalValue1== (diagonalValue2 == diagonalValue3)) {
+        let diagonal1Joined = (gameBoard[diagonal1] != undefined
+            && gameBoard[diagonal1] == gameBoard[diagonal1 + 4]
+            && gameBoard[diagonal1] == gameBoard[diagonal1 + 8]) ? true : false;
+        let diagonal2Joined = (gameBoard[diagonal2] != undefined
+            && gameBoard[diagonal2] == gameBoard[diagonal2 + 2]
+            && gameBoard[diagonal2] == gameBoard[diagonal2 + 4]) ? true : false;
+        if (diagonal1Joined) {
             isJoined.diagonalStatus = true;
             isJoined.winner = gameBoard[diagonal1];
         }
-        if (gameBoard[diagonal2] == gameBoard[diagonal2 + 2] == gameBoard[diagonal2 + 4]) {
+        if (diagonal2Joined) {
             isJoined.diagonalStatus = true;
             isJoined.winner = gameBoard[diagonal2];
         }
@@ -105,61 +130,66 @@ function createPlayer() {
 
 function createNewGame() {
     let gameBoard = createGameBoard();
-    const rounds = 3;
+    const rounds = 1;
     let currentRound = 1;
     const winners = [];
     let player1 = createPlayer();
     let player2 = createPlayer();
     // Get player names from the user and sets their respective markers
-    function getPlayerNames(){
+    function getPlayerNames() {
         let playerName = prompt("Enter Player Name:");
         player1.setPlayerName(playerName);
         player1.setPlayerMarker("X");
-        playerName= prompt("Enter 2 player name: ");
+        playerName = prompt("Enter 2 player name: ");
         player2.setPlayerName(playerName);
         player2.setPlayerMarker("O");
     }
-    // Play one round
-    function round(){
+    // Play given number of rounds
+    function round() {
         let players = [player1, player2];
-        while(!gameBoard.isGameOver()){
-            players.forEach(player =>{
-                let indexValue = player.selectIndex();
-                gameBoard.addMarkerXO(indexValue,player.getPlayerMarker());
-                if(gameBoard.isGameOver()){
+        while (currentRound <= rounds && !gameBoard.isGameOver()) {
+            players.forEach(player => {
+                 // check for game over after index selection
+                 if (currentRound <= rounds && gameBoard.isGameOver()) {
                     winners.push(gameBoard.getWinner());
                     alert(`The winner is ${gameBoard.getWinner()}`);
                     gameBoard.clearBoard();
-                }
+                    currentRound++;
+                }else{
+                     // Each Player select an index 
+                    let indexValue = player.selectIndex();
+                    gameBoard.addMarkerXO(indexValue, player.getPlayerMarker());
+                }  
             });
         }
     }
     // Winner of Three Rounds
-    function showTotalWinner(){
-        let firstPlayerWon= winners.filter(value => value == "X").length;
-        let secondPlayerWon= winners.filter(value => value == "O").length;
-        let draw= winners.filter(value => value == "draw").length;
-        if(firstPlayerWon > secondPlayerWon && firstPlayerWon > draw){
-            alert(firstPlayerWon.getPlayerName());
-        }else if (secondPlayerWon > firstPlayerWon && secondPlayerWon > draw){
-            alert(secondPlayerWon.getPlayerName());
-        }else{
+    function showTotalWinner() {
+        // no of games X won
+        let firstPlayerWon = winners.filter(value => value == "X").length;
+        // no of games O won
+        let secondPlayerWon = winners.filter(value => value == "O").length;
+        // no of games that was draw
+        let draw = winners.filter(value => value == "draw").length;
+        // display who got the most
+        if (firstPlayerWon > secondPlayerWon && firstPlayerWon > draw) {
+            alert(player1.getPlayerName());
+        } else if (secondPlayerWon > firstPlayerWon && secondPlayerWon > draw) {
+            alert(player2.getPlayerName());
+        } else {
             alert("Draw");
         }
     }
     // play game
-    function startGame(){
+    function startGame() {
         getPlayerNames();
-        while(currentRound <= rounds){
-            round();
-            currentRound++;
-        }
+        round(); 
         showTotalWinner();
     }
-    return{startGame};
+    return { startGame };
 }
 
-function startGame(){
+function startGame() {
     let newgame = createNewGame();
     newgame.startGame()
 }
