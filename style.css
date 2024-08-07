@@ -1,11 +1,11 @@
-:root{
+:root {
     --main-color: rgb(23, 21, 59);
     --main-color-2: rgb(46, 35, 108);
     --secondary-color: rgb(67, 61, 139);
-    --secondary-color-2:rgb(200, 172, 214);
+    --secondary-color-2: rgb(200, 172, 214);
 }
 
-body{
+body {
     background-color: var(--main-color);
     display: flex;
     justify-content: center;
@@ -13,8 +13,60 @@ body{
     font-family: monospace;
 }
 
+/* Player Name Dialog form */
+dialog.player-name {
+    margin: auto;
+    width: 35rem;
+    height: 25rem;
+    background-color: var(--main-color-2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+dialog::backdrop {
+    background-color: gray;
+    opacity: 0.75;
+}
+
+.player-name form {
+    color: white;
+    display: grid;
+    grid-template-rows: 4rem 2rem 2rem 3rem; 
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+}
+
+.player-name  h1 {
+    text-align: center;
+    text-transform: uppercase;
+    font-size: 2rem;
+    grid-column: 1 / -1;
+}
+
+.player-name label{
+    font-size: large;
+    align-self: center;
+}
+
+.player-name form button{
+    --color : rgb(31, 151, 31);
+    grid-column: 1/ -1;
+    align-self: center;
+    font-size: 1rem;
+    background-color: var(--color);
+    color: white;
+    outline: none;
+    border: 2px solid white;
+}
+
+.player-name form button:hover{
+    --color : rgb(67, 221, 67);
+}
+
+
 /* Total Game Area */
-.game-container{
+.game-container {
     min-width: 40rem;
     min-height: 40rem;
     margin-top: 8px;
@@ -23,19 +75,19 @@ body{
     gap: 8px;
 }
 
-.game-container h1{
+.game-container h1 {
     justify-self: center;
     align-self: center;
     font-size: 4rem;
     color: #ffffff;
 }
 
-.game-container .buttons{
+.game-container .buttons {
     align-self: center;
     justify-self: center;
 }
 
-.game-container .buttons button{
+.game-container .buttons button {
     width: 10rem;
     height: 2.5rem;
     color: white;
@@ -47,50 +99,49 @@ body{
     text-transform: uppercase;
 }
 
-.game-container .buttons .start{
-    --color : rgb(55, 175, 55);
+.game-container .buttons .start {
+    --color: rgb(55, 175, 55);
 }
 
-.game-container .buttons .start:hover{
-    --color : rgb(17, 214, 17);
+.game-container .buttons .start:hover {
+    --color: rgb(17, 214, 17);
 }
 
-.game-container .buttons .restart{
-    --color : rgb(207, 59, 59);
+.game-container .buttons .restart {
+    --color: rgb(207, 59, 59);
 }
 
-.game-container .buttons .restart:hover{
-    --color : rgb(223, 15, 15);
+.game-container .buttons .restart:hover {
+    --color: rgb(223, 15, 15);
 }
 
 /* Tic Tac Toe game */
-.tic-tac-toe{
+.tic-tac-toe {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, 1fr);
     gap: 4px;
 }
 
-.tic-tac-toe button{
+.tic-tac-toe button {
     background-color: #ffffff;
 }
 
-.tic-tac-toe button:hover{
+.tic-tac-toe button:hover {
     background-color: var(--secondary-color-2);
 }
 
-.tic-tac-toe .X, 
-.tic-tac-toe .O{
+.tic-tac-toe .X,
+.tic-tac-toe .O {
     align-self: center;
     font-size: 7rem;
     color: var(--marker-color);
 }
 
-.tic-tac-toe .X{
+.tic-tac-toe .X {
     --marker-color: var(--main-color-2)
 }
 
-.tic-tac-toe .O{
+.tic-tac-toe .O {
     --marker-color: var(--secondary-color);
 }
-
