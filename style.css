@@ -19,9 +19,6 @@ dialog.player-name {
     width: 35rem;
     height: 25rem;
     background-color: var(--main-color-2);
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }
 
 dialog::backdrop {
@@ -29,28 +26,36 @@ dialog::backdrop {
     opacity: 0.75;
 }
 
+.player-name .container {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .player-name form {
     color: white;
     display: grid;
-    grid-template-rows: 4rem 2rem 2rem 3rem; 
+    grid-template-rows: 4rem 2rem 2rem 3rem;
     grid-template-columns: 1fr 1fr;
     gap: 8px;
 }
 
-.player-name  h1 {
+.player-name h1 {
     text-align: center;
     text-transform: uppercase;
     font-size: 2rem;
     grid-column: 1 / -1;
 }
 
-.player-name label{
+.player-name label {
     font-size: large;
     align-self: center;
 }
 
-.player-name form button{
-    --color : rgb(31, 151, 31);
+.player-name form button {
+    --color: rgb(31, 151, 31);
     grid-column: 1/ -1;
     align-self: center;
     font-size: 1rem;
@@ -60,8 +65,8 @@ dialog::backdrop {
     border: 2px solid white;
 }
 
-.player-name form button:hover{
-    --color : rgb(67, 221, 67);
+.player-name form button:hover {
+    --color: rgb(67, 221, 67);
 }
 
 
@@ -144,4 +149,47 @@ dialog::backdrop {
 
 .tic-tac-toe .O {
     --marker-color: var(--secondary-color);
+}
+
+/* Winner dialog box */
+dialog.winner{
+    margin: auto;
+    width: 20rem;
+    height: 20rem;
+}
+
+dialog.winner .winner-notice{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--main-color);
+    color: white;
+}
+
+dialog.winner .winner-notice p{
+    font-size: 1rem;
+}
+
+dialog.winner .winner-notice h1{
+    font-size: 3rem;
+    text-transform: uppercase;
+}
+
+dialog.winner .winner-notice button{
+    --color: rgb(55, 175, 55);
+    margin-top: 8px;
+    width: 8rem;
+    height: 2rem;
+    font-size: large;
+    border-radius: 4px;
+    color: white;
+    text-transform: uppercase;
+    background-color:var(--color) ;
+}
+
+dialog.winner .winner-notice button:hover{
+    --color: rgb(17, 214, 17);
 }

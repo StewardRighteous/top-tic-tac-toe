@@ -193,6 +193,7 @@ function createUIController(){
     // Start and Restart Game Buttons
     const gameContainer = document.querySelector(".game-container");
     const userButtons = gameContainer.querySelector(".buttons");
+    const scoreCard = gameContainer.querySelector("h1");
     const startGameButton = userButtons.querySelector("button .start");
     const restartGameButton = userButtons.querySelector("button .restart");
 
@@ -209,6 +210,7 @@ function createUIController(){
 
     // winner dialog
     const winnerDialog = document.querySelector(".winner");
+    const newGameButton = winnerDialog.querySelector("button");
 
     function showPlayerNameDialog(){
         playerNameDialog.showModal();
@@ -220,6 +222,7 @@ function createUIController(){
     return{ showPlayerNameDialog , showWinnerDialog};
 }
 
-const startGame = createUIController();
-startGame.showPlayerNameDialog();
+const game = createUIController();
+game.showWinnerDialog();
+
 

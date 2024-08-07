@@ -10,14 +10,16 @@
 </head>
 <body>
     <dialog class="player-name">
-        <form action="">
-            <h1>Enter Player Names</h1>
-            <label for="player1">Enter Player 1 Name :</label>
-            <input type="text" id="player1" autofocus required>
-            <label for="player2">Enter Player 2 Name :</label>
-            <input type="text" id="player2" required>
-            <button type="button">Add Players</button>
-        </form>
+        <div class="container">
+            <form action="">
+                <h1>Enter Player Names</h1>
+                <label for="player1">Enter Player 1 Name :</label>
+                <input type="text" id="player1" autofocus required maxlength="8">
+                <label for="player2">Enter Player 2 Name :</label>
+                <input type="text" id="player2" required maxlength="8">
+                <button type="button">Add Players</button>
+            </form>
+        </div>
     </dialog>
     <div class="game-container">
         <h1>TIC-TAC-TOE</h1>
@@ -38,8 +40,11 @@
         </div>
     </div>
     <dialog class="winner">
-        <p>The winner is</p>
-        <h1>player1</h1>
+        <div class="winner-notice">
+            <p>The winner is</p>
+            <h1>player1</h1>
+            <button>New Game</button>
+        </div>
     </dialog>
 </body>
 </html>
