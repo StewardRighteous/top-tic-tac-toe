@@ -9,6 +9,35 @@
     <script src="script.js" defer></script>
 </head>
 <body>
-    <button onclick="startGame()">Start Game</button>
+    <dialog class="player-name">
+        <form action="">
+            <label for="player1">Enter Player 1 Name :</label>
+            <input type="text" id="player1">
+            <label for="player2">Enter Player 2 Name :</label>
+            <input type="text" id="player2">
+        </form>
+    </dialog>
+    <div class="game-container">
+        <h1>TIC-TAC-TOE</h1>
+        <div class="buttons">
+            <button class="start">Start Game</button>
+            <button class="restart">Restart Game</button>
+        </div>
+        <div class="tic-tac-toe">
+            <button data-index="0" class="box"></button>
+            <button data-index="1" class="box"></button>
+            <button data-index="2" class="box"></button>
+            <button data-index="3" class="box"></button>
+            <button data-index="4" class="box"></button>
+            <button data-index="5" class="box"></button>
+            <button data-index="6" class="box"></button>
+            <button data-index="7" class="box"></button>
+            <button data-index="8" class="box"></button>
+        </div>
+    </div>
+    <dialog class="winner">
+        <p>The winner is</p>
+        <h1>player1</h1>
+    </dialog>
 </body>
 </html>

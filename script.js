@@ -130,7 +130,7 @@ function createPlayer() {
 
 function createNewGame() {
     let gameBoard = createGameBoard();
-    const rounds = 1;
+    const rounds = 3;
     let currentRound = 1;
     const winners = [];
     let player1 = createPlayer();
@@ -189,8 +189,5 @@ function createNewGame() {
     return { startGame };
 }
 
-function startGame() {
-    let newgame = createNewGame();
-    newgame.startGame()
-}
+
 

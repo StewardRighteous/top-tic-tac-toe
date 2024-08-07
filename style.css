@@ -1,0 +1,96 @@
+:root{
+    --main-color: rgb(23, 21, 59);
+    --main-color-2: rgb(46, 35, 108);
+    --secondary-color: rgb(67, 61, 139);
+    --secondary-color-2:rgb(200, 172, 214);
+}
+
+body{
+    background-color: var(--main-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: monospace;
+}
+
+/* Total Game Area */
+.game-container{
+    min-width: 40rem;
+    min-height: 40rem;
+    margin-top: 8px;
+    display: grid;
+    grid-template-rows: 0.3fr 0.3fr 5fr;
+    gap: 8px;
+}
+
+.game-container h1{
+    justify-self: center;
+    align-self: center;
+    font-size: 4rem;
+    color: #ffffff;
+}
+
+.game-container .buttons{
+    align-self: center;
+    justify-self: center;
+}
+
+.game-container .buttons button{
+    width: 10rem;
+    height: 2.5rem;
+    color: white;
+    box-shadow: -2px 1px 2px var(--color);
+    background-color: var(--color);
+    border: 1px solid white;
+    font-weight: bold;
+    font-size: large;
+    text-transform: uppercase;
+}
+
+.game-container .buttons .start{
+    --color : rgb(55, 175, 55);
+}
+
+.game-container .buttons .start:hover{
+    --color : rgb(17, 214, 17);
+}
+
+.game-container .buttons .restart{
+    --color : rgb(207, 59, 59);
+}
+
+.game-container .buttons .restart:hover{
+    --color : rgb(223, 15, 15);
+}
+
+/* Tic Tac Toe game */
+.tic-tac-toe{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 4px;
+}
+
+.tic-tac-toe button{
+    background-color: #ffffff;
+}
+
+.tic-tac-toe button:hover{
+    background-color: var(--secondary-color-2);
+}
+
+.tic-tac-toe .X, 
+.tic-tac-toe .O{
+    align-self: center;
+    font-size: 7rem;
+    color: var(--marker-color);
+}
+
+.tic-tac-toe .X{
+    --marker-color: var(--main-color-2)
+}
+
+.tic-tac-toe .O{
+    --marker-color: var(--secondary-color);
+}
+
