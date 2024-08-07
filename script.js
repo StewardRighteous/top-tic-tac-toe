@@ -189,5 +189,37 @@ function createNewGame() {
     return { startGame };
 }
 
+function createUIController(){
+    // Start and Restart Game Buttons
+    const gameContainer = document.querySelector(".game-container");
+    const userButtons = gameContainer.querySelector(".buttons");
+    const startGameButton = userButtons.querySelector("button .start");
+    const restartGameButton = userButtons.querySelector("button .restart");
 
+    // Game Buttons
+    const ticTacToeGameContainer = gameContainer.querySelector(".tic-tac-toe");
+    const cellButtons = ticTacToeGameContainer.querySelectorAll(".box");
+
+    // Dialog for Player Names
+    const playerNameDialog = document.querySelector(".player-name");
+    const playerNameForms = playerNameDialog.querySelector("form");
+    const player1NameInput = playerNameDialog.querySelector("input #player1");
+    const player2NameInput = playerNameDialog.querySelector("input #player2");
+    const addPlayerNameButton = playerNameForms.querySelector("button");
+
+    // winner dialog
+    const winnerDialog = document.querySelector(".winner");
+
+    function showPlayerNameDialog(){
+        playerNameDialog.showModal();
+    }
+    function showWinnerDialog(){
+        winnerDialog.showModal();
+    }
+
+    return{ showPlayerNameDialog , showWinnerDialog};
+}
+
+const startGame = createUIController();
+startGame.showPlayerNameDialog();
 
