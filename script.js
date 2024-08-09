@@ -17,6 +17,10 @@ function createGameBoard() {
             gameBoard.splice(indexValue, 1, marker);
         }
     }
+    // Returns the marker in the gameboard for the given index
+    function getGameBoardMarkers(index) {
+        return gameBoard[index];
+    }
     function getWinner() {
         if (gameOver) {
             return isJoined.winner;
@@ -26,6 +30,15 @@ function createGameBoard() {
     function clearBoard() {
         gameBoard.fill(undefined);
         gameOver = false;
+    }
+    function clearLastRoundWinner(){
+        isJoined = {
+            rowStatus: false,
+            columnStatus: false,
+            diagonalStatus: false,
+            drawSatus: false,
+            winner: "",
+        }
     }
     // Checks for winner
     function isGameOver() {
@@ -103,12 +116,12 @@ function createGameBoard() {
         }
     }
 
-    return { addMarkerXO, getWinner, isGameOver, clearBoard };
+    return { addMarkerXO, getWinner, isGameOver, clearBoard, getGameBoardMarkers, clearLastRoundWinner };
 }
 
 function createPlayer() {
     let playerName = "player 1";
-    let playerMarker = "player 2";
+    let playerMarker = "X";
     function setPlayerName(name) {
         playerName = name;
     }
@@ -121,70 +134,69 @@ function createPlayer() {
     function getPlayerMarker() {
         return playerMarker;
     }
-    function selectIndex() {
-        let indexValue = prompt("Enter an Index Value");
-        return indexValue;
-    }
-    return { getPlayerMarker, getPlayerName, selectIndex, setPlayerName, setPlayerMarker };
+    return { getPlayerMarker, getPlayerName, setPlayerName, setPlayerMarker };
 }
 
-function createNewGame() {
-    let gameBoard = createGameBoard();
+function createNewGame(gameBoard, player1, player2) {
     const rounds = 3;
     let currentRound = 1;
-    const winners = [];
-    let player1 = createPlayer();
-    let player2 = createPlayer();
+    let winners = [];
+    function getRound() {
+        return currentRound - 1;
+    }
+    function getWinnerOfRound(round) {
+        return winners[round - 1];
+    }
     // Get player names from the user and sets their respective markers
-    function getPlayerNames() {
-        let playerName = prompt("Enter Player Name:");
-        player1.setPlayerName(playerName);
+    function setPlayerNamesWithMarkers(playerName1, playerName2) {
+        player1.setPlayerName(playerName1);
         player1.setPlayerMarker("X");
-        playerName = prompt("Enter 2 player name: ");
-        player2.setPlayerName(playerName);
+        player2.setPlayerName(playerName2);
         player2.setPlayerMarker("O");
     }
-    // Play given number of rounds
-    function round() {
-        let players = [player1, player2];
-        while (currentRound <= rounds && !gameBoard.isGameOver()) {
-            players.forEach(player => {
-                 // check for game over after index selection
-                 if (currentRound <= rounds && gameBoard.isGameOver()) {
-                    winners.push(gameBoard.getWinner());
-                    alert(`The winner is ${gameBoard.getWinner()}`);
-                    gameBoard.clearBoard();
-                    currentRound++;
-                }else{
-                     // Each Player select an index 
-                    let indexValue = player.selectIndex();
-                    gameBoard.addMarkerXO(indexValue, player.getPlayerMarker());
-                }  
-            });
+    // check for game over after index selection
+    function roundCheck() {
+        if (currentRound <= rounds && gameBoard.isGameOver()) {
+            winners.push(gameBoard.getWinner());
+            gameBoard.clearBoard();
+            currentRound++;
+            gameBoard.clearLastRoundWinner();
+            return true;
         }
+        return false;
     }
-    function noOfGamesWon(marker){
+    function clearRounds() {
+        currentRound = 1;
+        winners = [];
+    }
+    function gameEndCheck() {
+        if (currentRound > rounds) {
+            return true;
+        }
+        return false;
+    }
+    function noOfGamesWon(marker) {
         let noOfMarker = winners.filter(value => value == marker).length;
-        return noOfMarker; 
+        return noOfMarker;
     }
     // Winner of Three Rounds
-    function showTotalWinner() {
+    function getTotalWinner() {
         let firstPlayerWon = noOfGamesWon("X");
-        let secondPlayerWon = noOfGamesWon("0");
+        let secondPlayerWon = noOfGamesWon("O");
         let draw = noOfGamesWon("draw");
         // display who got the most
         if (firstPlayerWon > secondPlayerWon && firstPlayerWon > draw) {
-            alert(player1.getPlayerName());
+            return player1.getPlayerName();
         } else if (secondPlayerWon > firstPlayerWon && secondPlayerWon > draw) {
-            alert(player2.getPlayerName());
+            return player2.getPlayerName();
         } else {
-            alert("Draw");
+            return "draw";
         }
     }
-    return { getPlayerNames, round, showTotalWinner, noOfGamesWon };
+    return { roundCheck, getTotalWinner, noOfGamesWon, setPlayerNamesWithMarkers, gameEndCheck, getRound, clearRounds, getWinnerOfRound };
 }
 
-(function createUIController(){
+(function createUIController() {
     // Start and Restart Game Buttons
     const gameContainer = document.querySelector(".game-container");
     const userButtons = gameContainer.querySelector(".buttons");
@@ -196,6 +208,9 @@ function createNewGame() {
     const ticTacToeGameContainer = gameContainer.querySelector(".tic-tac-toe");
     const cellButtons = ticTacToeGameContainer.querySelectorAll(".box");
 
+    // Buttons(Markers) cannot be pressed(added) before starting the game
+    cellButtons.forEach(button => button.disabled = true);
+
     // Dialog for Player Names
     const playerNameDialog = document.querySelector(".player-name");
     const playerNameForms = playerNameDialog.querySelector("form");
@@ -205,11 +220,73 @@ function createNewGame() {
 
     // winner dialog
     const winnerDialog = document.querySelector(".winner");
+    const winnerNotice = winnerDialog.querySelector(".winner-notice");
+    const winnerName = winnerNotice.querySelector("h1");
     const newGameButton = winnerDialog.querySelector("button");
 
-    // create new Game
-    function newGame(){
+    // UI controller will have all details with these objects
+    let game;
+    let player1 = createPlayer();
+    let player2 = createPlayer();
+    let gameBoard = createGameBoard();
+    let playerTurn = "X";
+
+    function switchTurn() {
+        playerTurn = (playerTurn == "X") ? "O" : "X";
+    }
+
+    function displayScoreCard() {
+        scoreCard.textContent =
+            `${player1.getPlayerName()} == ${game.noOfGamesWon("X")} || ${player2.getPlayerName()} == ${game.noOfGamesWon("O")} `;
+    }
+
+    function displayGameBoard() {
+        cellButtons.forEach(button => {
+            let indexValue = button.getAttribute("data-index");
+            if (gameBoard.getGameBoardMarkers(indexValue) == undefined) {
+                button.className = "box";
+                button.textContent = null;
+            } else if (gameBoard.getGameBoardMarkers(indexValue) == "X") {
+                button.className = "X";
+                button.textContent = "X";
+            } else {
+                button.className = "O";
+                button.textContent = "O";
+            }
+        });
+    }
+
+    function displayRoundEnd() {
+        if (game.roundCheck()) {
+            let round = game.getRound();
+            let winner = game.getWinnerOfRound(round);
+            let winnerName = (winner == "X") ? player1.getPlayerName() : player2.getPlayerName();
+            scoreCard.textContent = `Round ${game.getRound()}/3 winner is ${winnerName}`;
+        }
+    }
+
+    function displayGameEnd() {
+        if (game.gameEndCheck()) {
+            winnerName.textContent = game.getTotalWinner();
+            winnerDialog.showModal();
+            game.clearRounds();
+        }
+    }
+
+    // create new Game and initialize all objects
+    function newGame() {
+        winnerDialog.close();
+        player1 = createPlayer();
+        player2 = createPlayer();
+        gameBoard = createGameBoard();
+        game = createNewGame(gameBoard, player1, player2);
         playerNameDialog.showModal();
+        // Enabling buttons to add markers and removing old markers
+        cellButtons.forEach(button => {
+            button.disabled = false;
+            button.className = "box";
+            button.textContent = null;
+        });
     }
 
     // Buttons to start new game
@@ -217,19 +294,32 @@ function createNewGame() {
     restartGameButton.addEventListener("click", newGame);
     newGameButton.addEventListener("click", newGame)
 
-
-    addPlayerNameButton.addEventListener("click",()=>{
+    // Add Names to the player
+    addPlayerNameButton.addEventListener("click", () => {
         let playerName1 = player1NameInput.value ?? "player 1";
         let playerName2 = player2NameInput.value ?? "player 2";
+        game.setPlayerNamesWithMarkers(playerName1, playerName2);
         playerNameDialog.close();
+        player1NameInput.value = "";
+        player2NameInput.value = "";
+        displayScoreCard();
     });
-    cellButtons.forEach((button)=>{
-        button.addEventListener("click", ()=>{
+
+    // Add marker to gameboard and Check for game over
+    cellButtons.forEach((button) => {
+        button.addEventListener("click", () => {
             let indexValue = button.getAttribute("data-index");
-            button.className = "X";
-            button.textContent = "X";
-            button.disabled = true;
+            if (playerTurn == "X") {
+                gameBoard.addMarkerXO(indexValue, player1.getPlayerMarker())
+            } else {
+                gameBoard.addMarkerXO(indexValue, player2.getPlayerMarker())
+            }
+            displayGameBoard();
+            displayScoreCard();
+            displayRoundEnd();
+            displayGameEnd();
+            switchTurn();
         });
-    });    
+    });
 })();
 
