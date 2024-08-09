@@ -163,14 +163,15 @@ function createNewGame() {
             });
         }
     }
+    function noOfGamesWon(marker){
+        let noOfMarker = winners.filter(value => value == marker).length;
+        return noOfMarker; 
+    }
     // Winner of Three Rounds
     function showTotalWinner() {
-        // no of games X won
-        let firstPlayerWon = winners.filter(value => value == "X").length;
-        // no of games O won
-        let secondPlayerWon = winners.filter(value => value == "O").length;
-        // no of games that was draw
-        let draw = winners.filter(value => value == "draw").length;
+        let firstPlayerWon = noOfGamesWon("X");
+        let secondPlayerWon = noOfGamesWon("0");
+        let draw = noOfGamesWon("draw");
         // display who got the most
         if (firstPlayerWon > secondPlayerWon && firstPlayerWon > draw) {
             alert(player1.getPlayerName());
@@ -180,22 +181,16 @@ function createNewGame() {
             alert("Draw");
         }
     }
-    // play game
-    function startGame() {
-        getPlayerNames();
-        round(); 
-        showTotalWinner();
-    }
-    return { startGame };
+    return { getPlayerNames, round, showTotalWinner, noOfGamesWon };
 }
 
-function createUIController(){
+(function createUIController(){
     // Start and Restart Game Buttons
     const gameContainer = document.querySelector(".game-container");
     const userButtons = gameContainer.querySelector(".buttons");
     const scoreCard = gameContainer.querySelector("h1");
-    const startGameButton = userButtons.querySelector("button .start");
-    const restartGameButton = userButtons.querySelector("button .restart");
+    const startGameButton = userButtons.querySelector("button.start");
+    const restartGameButton = userButtons.querySelector("button.restart");
 
     // Game Buttons
     const ticTacToeGameContainer = gameContainer.querySelector(".tic-tac-toe");
@@ -204,25 +199,37 @@ function createUIController(){
     // Dialog for Player Names
     const playerNameDialog = document.querySelector(".player-name");
     const playerNameForms = playerNameDialog.querySelector("form");
-    const player1NameInput = playerNameDialog.querySelector("input #player1");
-    const player2NameInput = playerNameDialog.querySelector("input #player2");
+    const player1NameInput = playerNameDialog.querySelector("input#player1");
+    const player2NameInput = playerNameDialog.querySelector("input#player2");
     const addPlayerNameButton = playerNameForms.querySelector("button");
 
     // winner dialog
     const winnerDialog = document.querySelector(".winner");
     const newGameButton = winnerDialog.querySelector("button");
 
-    function showPlayerNameDialog(){
+    // create new Game
+    function newGame(){
         playerNameDialog.showModal();
     }
-    function showWinnerDialog(){
-        winnerDialog.showModal();
-    }
 
-    return{ showPlayerNameDialog , showWinnerDialog};
-}
+    // Buttons to start new game
+    startGameButton.addEventListener("click", newGame);
+    restartGameButton.addEventListener("click", newGame);
+    newGameButton.addEventListener("click", newGame)
 
-const game = createUIController();
-game.showWinnerDialog();
 
+    addPlayerNameButton.addEventListener("click",()=>{
+        let playerName1 = player1NameInput.value ?? "player 1";
+        let playerName2 = player2NameInput.value ?? "player 2";
+        playerNameDialog.close();
+    });
+    cellButtons.forEach((button)=>{
+        button.addEventListener("click", ()=>{
+            let indexValue = button.getAttribute("data-index");
+            button.className = "X";
+            button.textContent = "X";
+            button.disabled = true;
+        });
+    });    
+})();
 
