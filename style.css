@@ -138,7 +138,6 @@ dialog::backdrop {
 
 .tic-tac-toe .X,
 .tic-tac-toe .O {
-    align-self: center;
     font-size: 7rem;
     color: var(--marker-color);
 }
