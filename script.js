@@ -31,7 +31,7 @@ function createGameBoard() {
         gameBoard.fill(undefined);
         gameOver = false;
     }
-    function clearLastRoundWinner(){
+    function clearLastRoundWinner() {
         isJoined = {
             rowStatus: false,
             columnStatus: false,
@@ -221,6 +221,7 @@ function createNewGame(gameBoard, player1, player2) {
     // winner dialog
     const winnerDialog = document.querySelector(".winner");
     const winnerNotice = winnerDialog.querySelector(".winner-notice");
+    const winnerSentece = winnerDialog.querySelector("p");
     const winnerName = winnerNotice.querySelector("h1");
     const newGameButton = winnerDialog.querySelector("button");
 
@@ -260,14 +261,25 @@ function createNewGame(gameBoard, player1, player2) {
         if (game.roundCheck()) {
             let round = game.getRound();
             let winner = game.getWinnerOfRound(round);
-            let winnerName = (winner == "X") ? player1.getPlayerName() : player2.getPlayerName();
-            scoreCard.textContent = `Round ${game.getRound()}/3 winner is ${winnerName}`;
+            if (winner == "X" || winner == "O") {
+                let winnerName = (winner == "X") ? player1.getPlayerName() : player2.getPlayerName();
+                scoreCard.textContent = `Round ${game.getRound()}/3 winner is ${winnerName}`;
+            } else {
+                scoreCard.textContent = `Draw! Click box to start next round`
+            }
         }
     }
 
     function displayGameEnd() {
         if (game.gameEndCheck()) {
-            winnerName.textContent = game.getTotalWinner();
+            let winner = game.getTotalWinner();
+            if(winner == "draw"){
+                winnerSentece.textContent = "The Game is";
+                winnerName.textContent = "DRAW";
+            }else{
+                winnerSentece.textContent = "The winner is"
+                winnerName.textContent = winner ;
+            }
             winnerDialog.showModal();
             game.clearRounds();
         }
