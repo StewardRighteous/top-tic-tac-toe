@@ -299,6 +299,7 @@ function createNewGame(gameBoard, player1, player2) {
         player1 = createPlayer();
         player2 = createPlayer();
         gameBoard = createGameBoard();
+        playerTurn = "X";
         game = createNewGame(gameBoard, player1, player2);
         playerNameDialog.showModal();
         // Enabling buttons to add markers and removing old markers
