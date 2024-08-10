@@ -225,6 +225,14 @@ function createNewGame(gameBoard, player1, player2) {
     const winnerName = winnerNotice.querySelector("h1");
     const newGameButton = winnerDialog.querySelector("button");
 
+    // Making dialogs Not Cancellabe when clicked Esc
+    playerNameDialog.addEventListener("cancel", (e)=> {
+        e.preventDefault();
+    });
+    winnerDialog.addEventListener("cancel", (e)=>{
+        e.preventDefault();
+    });
+
     // UI controller will have all details with these objects
     let game;
     let player1 = createPlayer();
