@@ -273,7 +273,7 @@ function createNewGame(gameBoard, player1, player2) {
                 let winnerName = (winner == "X") ? player1.getPlayerName() : player2.getPlayerName();
                 scoreCard.textContent = `Round ${game.getRound()}/3 winner is ${winnerName}`;
             } else {
-                scoreCard.textContent = `Draw! Click box to start next round`
+                scoreCard.textContent = `Draw! Click any cell to start next round`
             }
         }
     }
