@@ -335,6 +335,7 @@ function createNewGame(gameBoard, player1, player2) {
             } else {
                 gameBoard.addMarkerXO(indexValue, player2.getPlayerMarker())
             }
+            button.disabled = true;
             displayGameBoard();
             displayScoreCard();
             displayRoundEnd();
